@@ -1,13 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
 import 'logic/providers/agency_provider.dart';
 import 'logic/providers/category_provider.dart';
 import 'logic/providers/module_provider.dart';
 import 'logic/providers/setting_provider.dart';
 import 'navigation/navigation_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(

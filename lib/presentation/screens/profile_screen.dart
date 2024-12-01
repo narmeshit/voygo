@@ -49,8 +49,6 @@ class ProfileScreen extends StatelessWidget {
               provider.modules.length,
               (index) {
                 final module = provider.modules[index];
-                print('INDIVIDUAL');
-                print(module);
                 return ModuleWidget(
                   id: module.id,
                   name: module.name,

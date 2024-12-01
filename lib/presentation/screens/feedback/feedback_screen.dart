@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:voygo/data/services/feeback_service.dart';
 
 import 'emoticon.dart';
 
@@ -46,7 +48,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Future<void> submitFeedback() async {
     FocusScope.of(context).unfocus();
     if (selected != null || commentController.text.trim().isNotEmpty) {
-      print(commentController.text.trim());
+      await FeebackService().create(
+        {
+          'comment': commentController.text,
+          'name_app': 'VoyGo',
+          'date_added': FieldValue.serverTimestamp(),
+          'quick': emoticons[selected!].quick
+        },
+      );
       // await FirebaseFirestore.instance.collection('feedbacks').add({
       //   'emoticon': emoticons[selected!],
       //   'comment': commentController.text,
@@ -60,7 +69,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Se envió con éxito su feedback'),
+          content: Text('Se ha enviado su feedback'),
           duration: Duration(milliseconds: 1500),
         ),
       );
@@ -197,9 +206,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(16.0),
           child: FilledButton(
-            onPressed: selected != null || commentController.text.trim().isNotEmpty
-                ? () => submitFeedback()
-                : null,
+            onPressed:
+                selected != null || commentController.text.trim().isNotEmpty
+                    ? () => submitFeedback()
+                    : null,
             style: FilledButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
             ),

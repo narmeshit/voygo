@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "210077339842",
+    "firebase_url": "https://voygo-b94ae-default-rtdb.firebaseio.com",
+    "project_id": "voygo-b94ae",
+    "storage_bucket": "voygo-b94ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210077339842:android:2119a136b30be2b3d6eb5b",
+        "android_client_info": {
+          "package_name": "com.narmeshit.voygo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIrl69sc4xSF4ZKjW0C0Uc_sexNzPLsqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
