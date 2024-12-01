@@ -1,4 +1,4 @@
-package com.example.voygo
+package com.narmeshit.voygo
 
 import io.flutter.embedding.android.FlutterActivity
 

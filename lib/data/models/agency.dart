@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 class Agency {
   final int? id;
   final String ruc;
@@ -70,19 +71,27 @@ class Agency {
       reference: map['reference'] != null ? map['reference'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
       services: map['services'] != null ? map['services'] as String : null,
-      description: map['description'] != null ? map['description'] as String : null,
-      cellPhoneNumber: map['cell_phone_number'] != null ? map['cell_phone_number'] as String : null,
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      cellPhoneNumber: map['cell_phone_number'] != null
+          ? map['cell_phone_number'] as String
+          : null,
       schedules: map['schedules'] != null ? map['schedules'] as String : null,
-      attentionTime: map['attention_time'] != null ? map['attention_time'] as String : null,
+      attentionTime: map['attention_time'] != null
+          ? map['attention_time'] as String
+          : null,
       frontPage: map['front_page'] != null ? map['front_page'] as String : null,
       avatar: map['avatar'] != null ? map['avatar'] as String : null,
       location: map['location'] != null ? map['location'] as String : null,
-      joinedDate: map['joined_date'] != null ? DateTime.parse(map['joined_date']) : null,
+      joinedDate: map['joined_date'] != null && map['joined_date'] is String
+          ? DateTime.tryParse(map['joined_date'] as String)
+          : null,
       categoryId: map['category_id'] as int,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Agency.fromJson(String source) => Agency.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Agency.fromJson(String source) =>
+      Agency.fromMap(json.decode(source) as Map<String, dynamic>);
 }

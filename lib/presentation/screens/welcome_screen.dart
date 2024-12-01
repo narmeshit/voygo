@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
               SizedBox(
                 // width: double.infinity,
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: null,
                   style: FilledButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                   ),
@@ -54,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
               SizedBox(
                 // width: double.infinity,
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: null,
                   style: FilledButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                   ),

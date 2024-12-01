@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../data/models/agency.dart';
 import '../../../logic/providers/agency_provider.dart';
@@ -19,6 +20,7 @@ class ShowScreen extends StatelessWidget {
     final indexCategory = categoryProvider
         .indexWhere((element) => element.id == agency.categoryId);
     final category = categoryProvider[indexCategory];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -41,21 +43,44 @@ class ShowScreen extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              'https://placehold.co/400x250.png',
+              agency.frontPage!.isNotEmpty
+                  ? agency.frontPage!
+                  : 'https://placehold.co/400x250.png',
               width: double.infinity,
               height: 280,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                return loadingProgress == null
+                    ? child
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network(
+                  'https://placehold.co/400x250.png',
+                  width: double.infinity,
+                  height: 280,
+                  fit: BoxFit.cover,
+                );
+              },
             ),
             Container(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundImage: NetworkImage(
-                            'https://placehold.co/200x200.png'),
+                          agency.avatar != null && agency.avatar!.isNotEmpty
+                              ? agency.avatar!
+                              : 'https://placehold.co/200x200.png',
+                        ),
+                        onBackgroundImageError: (_, __) {
+                          // Maneja errores de carga de imagen
+                          print('Error loading image');
+                        },
                         maxRadius: 32,
                       ),
                       const SizedBox(width: 16),
@@ -77,13 +102,15 @@ class ShowScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  if (agency.description != null)
+                  if (agency.description != null &&
+                      agency.description!.isNotEmpty)
                     Column(
                       children: [
                         Card(
                           elevation: 0,
                           margin: EdgeInsets.zero,
                           child: Container(
+                            width: double.infinity,
                             padding: const EdgeInsets.all(16.0),
                             child: Text(
                               agency.description!,
@@ -107,35 +134,39 @@ class ShowScreen extends StatelessWidget {
                             visualDensity: VisualDensity.compact,
                             dense: true,
                           ),
-                          if (agency.address != null)
+                          if (agency.address != null &&
+                              agency.address!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.map_outlined),
-                              title: Text(agency.address!),
+                              title: Text('${agency.address}'),
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.reference != null)
+                          if (agency.reference != null &&
+                              agency.reference!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.library_books_outlined),
-                              title: Text(agency.reference!),
+                              title: Text('${agency.reference}'),
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.email != null)
+                          if (agency.email != null && agency.email!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.email_outlined),
-                              title: Text(agency.email!),
+                              title: Text('${agency.email}'),
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.cellPhoneNumber != null)
+                          if (agency.cellPhoneNumber != null &&
+                              agency.cellPhoneNumber!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.phone_outlined),
                               title: Text(agency.cellPhoneNumber!),
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.schedules != null)
+                          if (agency.schedules != null &&
+                              agency.schedules!.isNotEmpty)
                             ListTile(
                               leading:
                                   const Icon(Icons.calendar_today_outlined),
@@ -143,14 +174,17 @@ class ShowScreen extends StatelessWidget {
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.attentionTime != null)
+                          if (agency.attentionTime != null &&
+                              agency.attentionTime!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.access_time),
                               title: Text(agency.attentionTime!),
                               visualDensity: VisualDensity.compact,
                               dense: true,
                             ),
-                          if (agency.location != null)
+                          // if (agency.location!.isNotEmpty)
+                          if (agency.location != null &&
+                              agency.location!.isNotEmpty)
                             ListTile(
                               leading: const Icon(Icons.location_on_outlined),
                               title: Text(agency.location!),
@@ -163,9 +197,10 @@ class ShowScreen extends StatelessWidget {
                             visualDensity: VisualDensity.compact,
                             dense: true,
                           ),
-                          const ListTile(
-                            leading: Icon(Icons.info_outline),
-                            title: Text('Se unió el 10 oct 2024'),
+                          ListTile(
+                            leading: const Icon(Icons.info_outline),
+                            // title: Text('Se unió el 10 oct 2024'),
+                            title: Text('Se unió el ${DateFormat('d MMM yyyy').format(agency.joinedDate!)}'),
                             visualDensity: VisualDensity.compact,
                             dense: true,
                           ),
@@ -176,8 +211,58 @@ class ShowScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   FilledButton.tonalIcon(
                     onPressed: () {
-                      provider.delete(agency.id!);
-                      context.pop();
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                              Container(
+                                  width: 30,
+                                  height: 4,
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                Text(
+                                  '¿Estás seguro de eliminar?',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(
+                                            context);
+                                      },
+                                      child: const Text('Cancelar'),
+                                    ),
+                                    FilledButton(
+                                      onPressed: () {
+                                        provider.delete(agency.id!);
+                                        context.pop();
+                                        context.pop();
+                                      },
+                                      child: const Text('Eliminar'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
                     },
                     icon: const Icon(Icons.delete),
                     label: const Text('Eliminiar'),

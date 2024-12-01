@@ -11,6 +11,7 @@ class FeedbackScreen extends StatefulWidget {
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
   int? selected;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
 
   @override
@@ -75,16 +76,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Feedback'),
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Feedback'),
+        ),
+        body: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,18 +191,19 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   setState(() {});
                 },
               ),
-              const Spacer(),
-              FilledButton(
-                onPressed:
-                    selected != null || commentController.text.trim().isNotEmpty
-                        ? () => submitFeedback()
-                        : null,
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Enviar ahora'),
-              ),
             ],
+          ),
+        ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: FilledButton(
+            onPressed: selected != null || commentController.text.trim().isNotEmpty
+                ? () => submitFeedback()
+                : null,
+            style: FilledButton.styleFrom(
+              minimumSize: const Size(double.infinity, 50),
+            ),
+            child: const Text('Enviar ahora'),
           ),
         ),
       ),

@@ -18,19 +18,22 @@ class AppRouters extends StatefulWidget {
 class _AppRoutersState extends State<AppRouters> {
   int _selectedIndex = 0;
 
+  final List<Widget> _pages = const [
+    HomeScreen(),
+    FavoriteScreen(),
+    FeedbackScreen(),
+    ProfileScreen(),
+  ];
+
   Widget screen() {
     return IndexedStack(
       index: _selectedIndex,
-      children: const [
-        HomeScreen(),
-        FavoriteScreen(),
-        FeedbackScreen(),
-        ProfileScreen(),
-      ],
+      children: _pages,
     );
   }
 
   void _onItemTapped(int value) {
+    FocusScope.of(context).unfocus();
     setState(() {
       _selectedIndex = value;
     });
@@ -44,12 +47,14 @@ class _AppRoutersState extends State<AppRouters> {
       value: settingProvider.darkMode
           ? SystemUiOverlayStyle(
               statusBarIconBrightness: Brightness.light,
-              systemNavigationBarColor: Theme.of(context).colorScheme.surfaceContainer,
+              systemNavigationBarColor:
+                  Theme.of(context).colorScheme.surfaceContainer,
               systemNavigationBarIconBrightness: Brightness.light,
             )
           : SystemUiOverlayStyle(
               statusBarIconBrightness: Brightness.dark,
-              systemNavigationBarColor: Theme.of(context).colorScheme.surfaceContainer,
+              systemNavigationBarColor:
+                  Theme.of(context).colorScheme.surfaceContainer,
               systemNavigationBarIconBrightness: Brightness.dark,
             ),
       child: Scaffold(

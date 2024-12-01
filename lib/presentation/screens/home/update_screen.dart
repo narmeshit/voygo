@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voygo/data/models/agency.dart';
+import 'package:voygo/logic/providers/category_provider.dart';
 
-import '../../../data/models/agency.dart';
 import '../../../logic/providers/agency_provider.dart';
 
 class UpdateScreen extends StatefulWidget {
@@ -15,6 +16,9 @@ class UpdateScreen extends StatefulWidget {
 }
 
 class _UpdateScreenState extends State<UpdateScreen> {
+  String? frontPageUrl;
+  String? avatarUrl;
+
   final formKey = GlobalKey<FormState>();
   final rucController = TextEditingController();
   final companyNameController = TextEditingController();
@@ -35,18 +39,40 @@ class _UpdateScreenState extends State<UpdateScreen> {
   void initState() {
     rucController.text = widget.agency.ruc;
     companyNameController.text = widget.agency.companyName;
-    // addressController.text = widget.agency.address!;
-    // referenceController.text = widget.agency.reference!;
-    // emailController.text = widget.agency.email!;
-    // servicesController.text = widget.agency.services!;
-    // descriptionController.text = widget.agency.description!;
-    // cellPhoneNumberController.text = widget.agency.cellPhoneNumber!;
-    // schedulesController.text = widget.agency.schedules!;
-    // attentionTimeController.text = widget.agency.attentionTime!;
-    // frontPageController.text = widget.agency.frontPage!;
-    // avatarController.text = widget.agency.avatar!;
-    // locationController.text = widget.agency.location!;
-    // categoryController.text = widget.agency.categoryId as String;
+    if (widget.agency.address != null && widget.agency.address!.isNotEmpty) {
+      addressController.text = widget.agency.address!;
+    }
+    if (widget.agency.reference != null && widget.agency.reference!.isNotEmpty) {
+      referenceController.text = widget.agency.reference!;
+    }
+    if (widget.agency.email != null && widget.agency.email!.isNotEmpty){
+    emailController.text = widget.agency.email!;
+    }
+    if (widget.agency.services != null && widget.agency.services!.isNotEmpty) {
+      servicesController.text = widget.agency.services!;
+    }
+    if (widget.agency.description != null && widget.agency.description!.isNotEmpty) {
+      descriptionController.text = widget.agency.description!;
+    }
+    if (widget.agency.cellPhoneNumber != null && widget.agency.cellPhoneNumber!.isNotEmpty) {
+      cellPhoneNumberController.text = widget.agency.cellPhoneNumber!;
+    }
+    if (widget.agency.schedules != null && widget.agency.schedules!.isNotEmpty) {
+      schedulesController.text = widget.agency.schedules!;
+    }
+    if (widget.agency.attentionTime != null && widget.agency.attentionTime!.isNotEmpty) {
+      attentionTimeController.text = widget.agency.attentionTime!;
+    }
+    if (widget.agency.frontPage != null && widget.agency.frontPage!.isNotEmpty) {
+      frontPageController.text = widget.agency.frontPage!;
+    }
+    if (widget.agency.avatar != null && widget.agency.avatar!.isNotEmpty) {
+      avatarController.text = widget.agency.avatar!;
+    }
+    if (widget.agency.location != null && widget.agency.location!.isNotEmpty) {
+      locationController.text = widget.agency.location!;
+    }
+    categoryController.text = '${widget.agency.categoryId}';
     super.initState();
   }
 
@@ -75,7 +101,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Agencia modificado'),
+          content: Text('Agencia actualizada'),
         ),
       );
     }
@@ -84,7 +110,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   @override
   Widget build(BuildContext context) {
     final agencyProvider = Provider.of<AgencyProvider>(context);
-
+    final categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar'),
@@ -92,7 +118,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
           FilledButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                print('Formulario válido');
                 final agency = Agency(
                   id: widget.agency.id,
                   ruc: rucController.text.trim(),
@@ -105,14 +130,16 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   cellPhoneNumber: cellPhoneNumberController.text.trim(),
                   schedules: schedulesController.text.trim(),
                   attentionTime: attentionTimeController.text.trim(),
+                  frontPage: frontPageController.text.trim(),
+                  avatar: avatarController.text.trim(),
                   location: locationController.text.trim(),
-                  joinedDate: DateTime.now(),
                   categoryId: int.parse(categoryController.text.trim()),
+                  joinedDate: widget.agency.joinedDate!,
                 );
+                agencyProvider.update(agency);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Agencia modifcado'),
-                    duration: Duration(seconds: 2),
+                    content: Text('Agencia actualizada'),
                   ),
                 );
                 context.pop();
@@ -120,6 +147,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
             },
             child: const Text('Guardar'),
           ),
+          const SizedBox(width: 4),
         ],
       ),
       body: SingleChildScrollView(
@@ -128,24 +156,69 @@ class _UpdateScreenState extends State<UpdateScreen> {
           key: formKey,
           child: Column(
             children: [
-              Card(
-                margin: EdgeInsets.zero,
-                clipBehavior: Clip.hardEdge,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/onboarding/01.jpg',
-                      width: double.infinity,
-                      height: 250,
-                      fit: BoxFit.cover,
-                    ),
-                    FilledButton.tonal(
-                      onPressed: () {},
-                      child: const Text('Subir portada'),
-                    ),
-                  ],
+              if (frontPageController.text != '')
+                Card(
+                  margin: EdgeInsets.zero,
+                  clipBehavior: Clip.hardEdge,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.network(
+                        frontPageController.text,
+                        width: double.infinity,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          return loadingProgress == null
+                              ? child
+                              : const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+              FilledButton.tonal(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('400x250'),
+                        content: TextField(
+                          controller: frontPageController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'URL portada',
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancelar'),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                frontPageUrl = frontPageController.text;
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Validar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: const Text('Subir portada'),
               ),
               const SizedBox(height: 24.0),
               TextFormField(
@@ -182,6 +255,53 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 },
               ),
               const SizedBox(height: 24.0),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.category),
+                  border: OutlineInputBorder(),
+                  labelText: 'Categoria (*)',
+                ),
+                value: categoryController.text.isEmpty
+                    ? null
+                    : categoryController.text,
+                items: categoryProvider.categories.map(
+                  (category) {
+                    return DropdownMenuItem<String>(
+                      value: '${category.id}',
+                      child: Text(category.name),
+                    );
+                  },
+                ).toList(),
+                onChanged: (valor) {
+                  categoryController.text = valor ?? '';
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una categoria';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24.0),
+              TextFormField(
+                controller: servicesController,
+                maxLines: 2,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.directions_bus_outlined),
+                  border: OutlineInputBorder(),
+                  labelText: 'Servicios (*)',
+                ),
+                maxLength: 75,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa los servicios';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24.0),
               TextFormField(
                 controller: addressController,
                 decoration: const InputDecoration(
@@ -208,29 +328,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   labelText: 'Correo electrónico',
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Por favor ingresa un correo electrónico';
-                //   }
-                //   String emailPattern =
-                //       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-                //   RegExp regExp = RegExp(emailPattern);
-                //   if (!regExp.hasMatch(value)) {
-                //     return 'El formato de correo electrónico no es válido';
-                //   }
-                //   return null;
-                // },
-              ),
-              const SizedBox(height: 24.0),
-              TextFormField(
-                controller: servicesController,
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.directions_bus_outlined),
-                  border: OutlineInputBorder(),
-                  labelText: 'Servicios',
-                ),
-                maxLength: 75,
               ),
               const SizedBox(height: 24.0),
               TextFormField(
@@ -281,39 +378,68 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 ),
               ),
               const SizedBox(height: 24.0),
-              TextFormField(
-                controller: categoryController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.category),
-                  border: OutlineInputBorder(),
-                  labelText: 'Categoria',
+              if (avatarController.text != '')
+                ClipOval(
+                  clipBehavior: Clip.hardEdge,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.network(
+                        avatarController.text,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          return loadingProgress == null
+                              ? child
+                              : const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa una categoria';
-                  }
-                  return null;
+              FilledButton.tonal(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('200x200'),
+                        content: TextField(
+                          controller: avatarController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'URL avatar',
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancelar'),
+                          ),
+                          FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                avatarUrl = avatarController.text;
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Text('Validar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
-              ),
-              const SizedBox(height: 24.0),
-              ClipOval(
-                clipBehavior: Clip.hardEdge,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/onboarding/02.jpg',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    FilledButton.tonal(
-                      onPressed: () {},
-                      child: const Text('Subir avatar'),
-                    ),
-                  ],
-                ),
+                child: const Text('Subir avatar'),
               ),
             ],
           ),

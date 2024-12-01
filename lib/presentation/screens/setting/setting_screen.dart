@@ -53,6 +53,12 @@ class SettingScreen extends StatelessWidget {
               trailing: Text('Español'),
             ),
             SwitchListTile(
+              value: settingProvider.isFirstTimeUser,
+              onChanged: (value) => settingProvider.toogleGuideHome(value),
+              secondary: const Icon(Icons.view_carousel_outlined),
+              title: const Text('Guía inicial'),
+            ),
+            SwitchListTile(
               value: settingProvider.darkMode,
               onChanged: (value) => settingProvider.toogleDarkMode(value),
               secondary: const Icon(Icons.dark_mode_outlined),

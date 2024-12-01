@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:voygo/core/custom_navigator_observer.dart';
 import '../logic/providers/agency_provider.dart';
 import '../presentation/screens/home/create_screen.dart';
 import '../presentation/screens/home/show_screen.dart';
@@ -14,6 +14,7 @@ import '../presentation/screens/welcome_screen.dart';
 import 'app_routers.dart';
 
 final GoRouter router = GoRouter(
+  observers: [CustomNavigatorObserver()],
   initialLocation: '/splash',
   routes: [
     GoRoute(
@@ -40,8 +41,10 @@ final GoRouter router = GoRouter(
           path: 'show/:id',
           builder: (context, state) {
             final id = int.parse(state.pathParameters['id']!);
-            final provider = Provider.of<AgencyProvider>(context, listen: false);
-            final index = provider.agencies.indexWhere((element) => element.id == id);
+            final provider =
+                Provider.of<AgencyProvider>(context, listen: false);
+            final index =
+                provider.agencies.indexWhere((element) => element.id == id);
             final agency = provider.agencies[index];
             return ShowScreen(agency: agency);
           },
@@ -50,21 +53,12 @@ final GoRouter router = GoRouter(
           path: 'update/:id',
           builder: (context, state) {
             final id = int.parse(state.pathParameters['id']!);
-            final provider = Provider.of<AgencyProvider>(context, listen: false);
-            final index = provider.agencies.indexWhere((element) => element.id == id);
+            final provider =
+                Provider.of<AgencyProvider>(context, listen: false);
+            final index =
+                provider.agencies.indexWhere((element) => element.id == id);
             final agency = provider.agencies[index];
             return UpdateScreen(agency: agency);
-            // final agency = Provider.of<AgencyProvider>(context, listen: false)
-            //     .getById(id) as Agency?;
-            // if (agency == null) {
-            //   return Scaffold(
-            //     appBar: AppBar(
-            //       title: const Text('Error'),
-            //     ),
-            //   );
-            // }
-// UpdateScreen(agency: agency);
-            return SizedBox();
           },
         ),
         GoRoute(

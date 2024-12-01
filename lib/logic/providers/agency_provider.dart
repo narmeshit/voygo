@@ -53,8 +53,19 @@ class AgencyProvider with ChangeNotifier {
   Future<void> create(Agency agency) async {
     final id = await _agencyRepository.create(agency);
     final agencyById = await _agencyRepository.getById(id);
-    _agencies.add(agencyById!);
-    notifyListeners();
+    if (agencyById != null) {
+      _agencies.add(agencyById);
+      notifyListeners();
+    }
+  }
+
+  Future<void> update(Agency agency) async {
+    await _agencyRepository.update(agency);
+    final index = _agencies.indexWhere((a) => a.id == agency.id);
+    if (index != -1) {
+      _agencies[index] = agency;
+      notifyListeners();
+    }
   }
 
   Future<void> delete(int id) async {

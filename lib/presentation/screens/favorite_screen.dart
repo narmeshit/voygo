@@ -22,9 +22,15 @@ class FavoriteScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final agency = favorites[index];
                 return ListTile(
-                  leading: const CircleAvatar(
+                  leading: CircleAvatar(
                     backgroundImage: NetworkImage(
-                        'https://placehold.co/200x200.png'),
+                        agency.avatar != null && agency.avatar!.isNotEmpty
+                            ? agency.avatar!
+                            : 'https://placehold.co/200x200.png'),
+                    onBackgroundImageError: (_, __) {
+                      // Maneja errores de carga de imagen
+                      print('Error loading image');
+                    },
                     maxRadius: 28,
                   ),
                   title: Text(
@@ -32,7 +38,8 @@ class FavoriteScreen extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  subtitle: Text(agency.services!,
+                  subtitle: Text(
+                    agency.services!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

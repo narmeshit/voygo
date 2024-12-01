@@ -56,6 +56,7 @@ class AgencyRepositoryImpl implements AgencyRepository {
       agency.toMap(),
       where: 'id=?',
       whereArgs: [agency.id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

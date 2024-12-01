@@ -88,9 +88,27 @@ class HomeScreen extends StatelessWidget {
                                   bottomRight: Radius.circular(12),
                                 ),
                                 child: Image.network(
-                                  'https://placehold.co/400x250.png',
+                                  agency.frontPage!.isNotEmpty
+                                      ? agency.frontPage!
+                                      : 'https://placehold.co/400x250.png',
                                   height: 120,
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    return loadingProgress == null
+                                        ? child
+                                        : const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.network(
+                                      'https://placehold.co/400x250.png',
+                                      width: double.infinity,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 ),
                               ),
                               Container(
@@ -153,9 +171,27 @@ class HomeScreen extends StatelessWidget {
                                   bottomRight: Radius.circular(12),
                                 ),
                                 child: Image.network(
-                                  'https://placehold.co/400x250.png',
+                                  agency.frontPage!.isNotEmpty
+                                      ? agency.frontPage!
+                                      : 'https://placehold.co/400x250.png',
                                   height: 120,
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    return loadingProgress == null
+                                        ? child
+                                        : const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.network(
+                                      'https://placehold.co/400x250.png',
+                                      width: double.infinity,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 ),
                               ),
                               Container(
