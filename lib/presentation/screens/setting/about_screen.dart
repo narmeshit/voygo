@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
+
+  void openUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw 'No se puede abrir $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,13 +117,13 @@ class AboutScreen extends StatelessWidget {
           children: [
             const Text('Siguenos en:'),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://facebook.com/people/Narmeshit/61557356108015/'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/facebook.png'),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://instagram.com/narmeshit'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/instagram.png'),
               ),
@@ -122,25 +135,25 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://twitter.com/narmeshit'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/twitter.png'),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://www.youtube.com/@narmeshit'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/youtube.png'),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://dribbble.com/jdccoyllor'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/dribbble.png'),
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () => openUrl('https://github.com/narmeshit'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/github.png'),
                 backgroundColor: Colors.white,
