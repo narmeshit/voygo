@@ -53,7 +53,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           'comment': commentController.text,
           'name_app': 'VoyGo',
           'date_added': FieldValue.serverTimestamp(),
-          'quick': emoticons[selected!].quick
+          'quick': selected != null ? emoticons[selected!].quick : null
         },
       );
       // await FirebaseFirestore.instance.collection('feedbacks').add({
