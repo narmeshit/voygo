@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../logic/providers/setting_provider.dart';
 
@@ -21,11 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateTo() async {
     await Future.delayed(const Duration(seconds: 2));
+    final prefs = await SharedPreferences.getInstance();
+    final showOnboarding = prefs.getBool('showOnboarding') ?? true;
     if (mounted) {
-      context.go('/onboarding');
+      if (showOnboarding) {
+        context.go('/onboarding');
+      } else {
+        context.go('/welcome');
+      }
     }
   }
-
+      
   @override
   Widget build(BuildContext context) {
     final settingProvider = Provider.of<SettingProvider>(context);
@@ -34,12 +41,14 @@ class _SplashScreenState extends State<SplashScreen> {
       value: settingProvider.darkMode
           ? SystemUiOverlayStyle(
               statusBarIconBrightness: Brightness.light,
-              systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+              systemNavigationBarColor:
+                  Theme.of(context).scaffoldBackgroundColor,
               systemNavigationBarIconBrightness: Brightness.light,
             )
           : SystemUiOverlayStyle(
               statusBarIconBrightness: Brightness.dark,
-              systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+              systemNavigationBarColor:
+                  Theme.of(context).scaffoldBackgroundColor,
               systemNavigationBarIconBrightness: Brightness.dark,
             ),
       child: Scaffold(

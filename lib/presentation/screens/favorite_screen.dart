@@ -28,8 +28,7 @@ class FavoriteScreen extends StatelessWidget {
                             ? agency.avatar!
                             : 'https://placehold.co/200x200.png'),
                     onBackgroundImageError: (_, __) {
-                      // Maneja errores de carga de imagen
-                      print('Error loading image');
+                      debugPrint('Error loading image');
                     },
                     maxRadius: 28,
                   ),

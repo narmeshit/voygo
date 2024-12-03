@@ -21,7 +21,6 @@ class ShowScreen extends StatelessWidget {
         .indexWhere((element) => element.id == agency.categoryId);
     final category = categoryProvider[indexCategory];
 
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -200,7 +199,8 @@ class ShowScreen extends StatelessWidget {
                           ListTile(
                             leading: const Icon(Icons.info_outline),
                             // title: Text('Se unió el 10 oct 2024'),
-                            title: Text('Se unió el ${DateFormat('d MMM yyyy').format(agency.joinedDate!)}'),
+                            title: Text(
+                                'Se unió el ${DateFormat('d MMM yyyy').format(agency.joinedDate!)}'),
                             visualDensity: VisualDensity.compact,
                             dense: true,
                           ),
@@ -212,6 +212,8 @@ class ShowScreen extends StatelessWidget {
                   FilledButton.tonalIcon(
                     onPressed: () {
                       showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.surfaceContainer,
                         context: context,
                         builder: (context) {
                           return Padding(
@@ -219,7 +221,7 @@ class ShowScreen extends StatelessWidget {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                              Container(
+                                Container(
                                   width: 30,
                                   height: 4,
                                   margin: const EdgeInsets.only(bottom: 10),
@@ -230,21 +232,25 @@ class ShowScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-
+                                Text(
+                                  'Eliminar agencia',
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge,
+                                ),
+                                const SizedBox(height: 16),
                                 Text(
                                   '¿Estás seguro de eliminar?',
                                   style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                      Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 const SizedBox(height: 16),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    TextButton(
+                                    FilledButton.tonal(
                                       onPressed: () {
-                                        Navigator.pop(
-                                            context);
+                                        Navigator.pop(context);
                                       },
                                       child: const Text('Cancelar'),
                                     ),
@@ -265,7 +271,7 @@ class ShowScreen extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.delete),
-                    label: const Text('Eliminiar'),
+                    label: const Text('Eliminar'),
                   ),
                 ],
               ),
