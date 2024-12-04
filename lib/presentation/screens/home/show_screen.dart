@@ -42,7 +42,7 @@ class ShowScreen extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              agency.frontPage!.isNotEmpty
+              agency.frontPage != null && agency.frontPage!.isNotEmpty
                   ? agency.frontPage!
                   : 'https://placehold.co/400x250.png',
               width: double.infinity,
@@ -234,14 +234,12 @@ class ShowScreen extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 Text(
                                   'Eliminar agencia',
-                                  style:
-                                      Theme.of(context).textTheme.titleLarge,
+                                  style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
                                   '¿Estás seguro de eliminar?',
-                                  style:
-                                      Theme.of(context).textTheme.bodyLarge,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 const SizedBox(height: 16),
                                 Row(

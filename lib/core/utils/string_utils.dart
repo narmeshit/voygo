@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 class StringUtils {
   final Map<String, IconData> iconMapping = {
+    'travel_explore': Icons.travel_explore,
     'event': Icons.event,
-    'person': Icons.person,
     'receipt_long': Icons.receipt_long,
-    'inventory_2': Icons.inventory_2,
-    'card_travel': Icons.card_travel,
-    'bar_chart': Icons.bar_chart,
-    'campaign': Icons.campaign,
-    'manage_accounts': Icons.manage_accounts,
-    'location_on': Icons.location_on,
+    'assignment': Icons.assignment_outlined,
+    'favorite': Icons.favorite,
+    'history': Icons.history,
+    'hiking': Icons.hiking,
+    'credit_card': Icons.credit_card,
+    'local_offer': Icons.local_offer_outlined,
+    'support_agent': Icons.support_agent,
+    'search': Icons.search,
+    'notifications': Icons.notifications_outlined,
   };
 }

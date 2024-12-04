@@ -88,7 +88,8 @@ class HomeScreen extends StatelessWidget {
                                   bottomRight: Radius.circular(12),
                                 ),
                                 child: Image.network(
-                                  agency.frontPage!.isNotEmpty
+                                  agency.frontPage != null &&
+                                          agency.frontPage!.isNotEmpty
                                       ? agency.frontPage!
                                       : 'https://placehold.co/400x250.png',
                                   height: 120,
@@ -171,7 +172,8 @@ class HomeScreen extends StatelessWidget {
                                   bottomRight: Radius.circular(12),
                                 ),
                                 child: Image.network(
-                                  agency.frontPage!.isNotEmpty
+                                  agency.frontPage != null &&
+                                          agency.frontPage!.isNotEmpty
                                       ? agency.frontPage!
                                       : 'https://placehold.co/400x250.png',
                                   height: 120,

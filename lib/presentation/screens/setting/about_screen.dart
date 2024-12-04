@@ -67,7 +67,7 @@ class AboutScreen extends StatelessWidget {
                   // ),
                   const SizedBox(height: 8.0),
                   Text(
-                    'Version: 1.0',
+                    'Version: 0.1',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 24.0),
@@ -76,32 +76,7 @@ class AboutScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8.0),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Scrum Master: ',
-                      style: Theme.of(context).textTheme.titleSmall,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Estudiante 01',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Equipo de Desarrollo: ',
-                      style: Theme.of(context).textTheme.titleSmall,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              'Estudiante 02, Estudiante 03, Estudiante 04, Estudiante 05',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ),
+                  const Text('Aplicación base UI Kits - 2024'),
                 ],
               ),
             ],
@@ -117,7 +92,8 @@ class AboutScreen extends StatelessWidget {
           children: [
             const Text('Siguenos en:'),
             GestureDetector(
-              onTap: () => openUrl('https://facebook.com/people/Narmeshit/61557356108015/'),
+              onTap: () => openUrl(
+                  'https://facebook.com/people/Narmeshit/61557356108015/'),
               child: const CircleAvatar(
                 backgroundImage: AssetImage('assets/social/facebook.png'),
               ),
