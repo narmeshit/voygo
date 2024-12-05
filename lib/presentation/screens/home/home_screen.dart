@@ -151,8 +151,8 @@ class HomeScreen extends StatelessWidget {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 0.60,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.63,
                     ),
                     itemBuilder: (context, index) {
                       final agency = agencyProvider.categoryAgencies[index];
